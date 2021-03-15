@@ -2,14 +2,15 @@
 Mobile app to chat with friends 
 
 ## Assumptions
-### The assumptions were to create a web application that would allow:
+### The assumptions were to create a mobile application that would allow:
 1. [Account registrations](#registration-screen)
 2. [Login](#login-screen)
 3. [Adding friend to friend-list](#adding-friend-screen)
 4. [Friend list](#friends-screen)
 5. [Conversations list](#conversations-screen)
 6. [Invitations list](#invitations-screen)
-7. [Chatting](#chat-screen)
+7. [Search friend](#search-screen)
+8. [Chatting](#chat-screen)
 
 ## Technologies
 
@@ -33,7 +34,7 @@ Mobile app to chat with friends
   <img src="https://i.imgur.com/tUYdyLS.png"  width="300px">
 </p>
 
-### Register Screen
+### Registration Screen
 <p align="left"> 
   <img src="https://i.imgur.com/BP1MtiT.png"  width="300px">
 </p>
@@ -64,7 +65,7 @@ Mobile app to chat with friends
   <img src="https://i.imgur.com/k6OWLAJ.png"  width="300px">
 </p>
 
-### Search 
+### Search Screen
 <p align="left"> 
   <img src="https://i.imgur.com/AMkKjnN.png"  width="300px">
 </p>
