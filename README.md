@@ -45,7 +45,6 @@ Mobile app to chat with friends
 </p>
 
 ### Friends Screen
-#### from which we can log in or go to the registration form.
 <p align="left"> 
   <img src="https://i.imgur.com/lRKKc8t.png"  width="300px">
 </p>
