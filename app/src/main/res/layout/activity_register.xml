@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Register.RegisterActivity">
+
+    <TextView
+        android:id="@+id/passwordError"
+        android:layout_width="200dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/password_rules"
+        android:textSize="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/etEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etLogin"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="5dp"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:hint="@string/hint_login"
+        android:backgroundTint="#C83030"
+        android:textSize="30px"
+        app:layout_constraintBottom_toTopOf="@+id/loginError"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/hint_email"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:inputType="textEmailAddress"
+        android:textSize="30px"
+        android:backgroundTint="#C83030"
+        app:layout_constraintBottom_toTopOf="@+id/etName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#C83030"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:textSize="30px"
+        app:layout_constraintBottom_toTopOf="@+id/passwordError"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etSurname"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#C83030"
+        android:hint="@string/hint_surname"
+        android:textSize="30px"
+        app:layout_constraintBottom_toTopOf="@+id/etAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="sign up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="10dp"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:backgroundTint="#C83030"
+        android:hint="@string/hint_age"
+        android:inputType="number"
+        android:textSize="30px"
+        app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="25dp"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:hint="@string/hint_phonenumber"
+        android:inputType="number"
+        android:textSize="30px"
+        android:backgroundTint="#C83030"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="200dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/hint_name"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:backgroundTint="#C83030"
+        android:textSize="30px"
+        app:layout_constraintBottom_toTopOf="@+id/etSurname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/loginError"
+        android:layout_width="200dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Login field cannot be: empty, can't have space chars. Upper Letters 0-5, Lower letters 5-15, numbers 0-4"
+        android:textSize="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/etPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfilePhoto"
+        android:layout_width="159dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="64dp"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/etLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.509"
+        android:src="@drawable/defaultuser"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

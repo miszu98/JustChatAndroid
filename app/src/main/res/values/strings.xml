@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Messanger</string>
+    <string name="register_text">Don\'t Have Account? Register now</string>
+
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_age">Age</string>
+    <string name="hint_phonenumber">Phone number</string>
+    <string name="password_rules">Upper and Lower letters 8-12, numbers 1-4, and one special char .,!@#$&amp;*</string>
+
+</resources>
