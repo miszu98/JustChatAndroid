@@ -1,9 +1,11 @@
 package com.example.messanger.Profile;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,10 +55,50 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         User selectedUser = (User) bundle.get("selectedUser");
+
+
+
         setSelectedUserPhoto(selectedUser);
         setSelectedUserDetails(selectedUser);
 
         addToFriends = findViewById(R.id.btnAddToFriend);
+
+        if (selectedUser.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+            addToFriends.setEnabled(false);
+            addToFriends.setText("Your profile");
+        } else {
+            addToFriends.setEnabled(true);
+            addToFriends.setText("add to friends");
+        }
+
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = null;
+                Map<String, String> mapa = new HashMap<>();
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.getValue(User.class).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                        user = s.getValue(User.class);
+                    }
+                    mapa.put(s.getKey(), s.getValue(User.class).getEmail());
+                }
+                List<String> mails = user.getFriends().getListFriends().subList(1, user.getFriends().getListFriends().size()).stream().map(i -> mapa.get(String.valueOf(i))).collect(Collectors.toList());
+
+                if (mails.contains(selectedUser.getEmail())) {
+                    addToFriends.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
         addToFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

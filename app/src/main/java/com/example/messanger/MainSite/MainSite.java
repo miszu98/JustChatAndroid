@@ -25,7 +25,6 @@ import com.example.messanger.Profile.UserProfileActivity;
 import com.example.messanger.R;
 import com.example.messanger.Repositories.DataBase;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +48,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * - get photo profile logged user from FirebaseStorage
  * - live searching database and display results
  */
+
+
 public class MainSite extends AppCompatActivity {
 
     private ListView listView, listOfconversations, listOfInvites, listOfFriends;
