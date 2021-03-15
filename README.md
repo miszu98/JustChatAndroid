@@ -3,18 +3,13 @@ Mobile app to chat with friends
 
 ## Assumptions
 ### The assumptions were to create a web application that would allow:
-1. [Account registrations](#registration-form)
-   * Full validation
-   * Password hashing (`BCrypt`)
-2. [Login](#login-page)
-3. [Viewing all products](#all-products)
-4. [Adding product to basket (kg or items)](#after-logging-in)
-5. [Deleting products from basket](#after-logging-in)
-5. [Filtering products](#filtered-offer)
-6. [View cart](#view-cart)
-7. [Placing orders](#order)
-6. [Sending e-mails after registration](#)
-7. [Sending e-mails after submit an order with summary](#)
+1. [Account registrations](#registration-screen)
+2. [Login](#login-screen)
+3. [Adding friend to friend-list](#adding-friend-screen)
+4. [Friend list](#friends-screen)
+5. [Conversations list](#conversations-screen)
+6. [Invitations list](#invitations-screen)
+7. [Chatting](#chat-screen)
 
 ## Technologies
 
@@ -38,6 +33,11 @@ Mobile app to chat with friends
   <img src="https://i.imgur.com/tUYdyLS.png"  width="300px">
 </p>
 
+### Register Screen
+<p align="left"> 
+  <img src="https://i.imgur.com/BP1MtiT.png"  width="300px">
+</p>
+
 ### Conversations Screen
 <p align="left"> 
   <img src="https://i.imgur.com/KeSAKjB.png"  width="300px">
@@ -54,16 +54,14 @@ Mobile app to chat with friends
   <img src="https://i.imgur.com/9GgcIFu.png"  width="300px">
 </p>
 
-### Adding friend Screen
-#### you can add/delete your products to cart.
+### Chat Screen
 <p align="left"> 
-  <img src="https://i.imgur.com/k6OWLAJ.png"  width="300px">
+  <img src="https://i.imgur.com/9r6a5cP.png"  width="300px">
 </p>
 
-
-### Register Screen
+### Adding friend Screen
 <p align="left"> 
-  <img src="https://i.imgur.com/BP1MtiT.png"  width="300px">
+  <img src="https://i.imgur.com/k6OWLAJ.png"  width="300px">
 </p>
 
 ### Search 
