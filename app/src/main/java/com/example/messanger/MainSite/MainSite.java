@@ -1,15 +1,18 @@
 package com.example.messanger.MainSite;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -17,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.example.messanger.Chat.ChatActivity;
 import com.example.messanger.Models.Message;
@@ -24,19 +29,26 @@ import com.example.messanger.Models.User;
 import com.example.messanger.Profile.UserProfileActivity;
 import com.example.messanger.R;
 import com.example.messanger.Repositories.DataBase;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -57,7 +69,11 @@ public class MainSite extends AppCompatActivity {
     private SearchView searchView;
     private List<String> mails;
     private ArrayAdapter<String> arrayAdapter;
+
+
     private CircleImageView profilePhoto;
+    public Uri photoURI;
+
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -91,7 +107,18 @@ public class MainSite extends AppCompatActivity {
         listOfInvites = findViewById(R.id.lvInvites);
         invitesLabel = findViewById(R.id.tvInvites);
 
+
+
         profilePhoto = findViewById(R.id.ivProfilePhoto);
+        profilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
+
+
+
 
         getUserPhoto();
         getFriendList();
@@ -116,6 +143,84 @@ public class MainSite extends AppCompatActivity {
         getConversation();
 
     }
+
+    private void chooseImage() {
+        Intent openGallery = new Intent();
+        openGallery.setType("image/*");
+        openGallery.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(openGallery, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            photoURI = data.getData();
+            profilePhoto.setImageURI(photoURI);
+            System.out.println("PHOTO URI: " + photoURI);
+            uploadPhoto();
+        }
+    }
+
+    private void uploadPhoto() {
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + randomKey);
+
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        storageReference.putFile(photoURI)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        // popup with information
+                        String photoID = randomKey;
+                        Snackbar.make(findViewById(android.R.id.content), "Photo uploaded.", Snackbar.LENGTH_SHORT).show();
+
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String key = null;
+                                User user = null;
+                                for (DataSnapshot s : snapshot.getChildren()) {
+                                    if (s.getValue(User.class).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                                        key = s.getKey();
+                                        user = s.getValue(User.class);
+                                    }
+                                 }
+                                user.setProfilePhotoID(photoID);
+                                databaseReference.child(key).setValue(user);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        double progress = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressDialog.setMessage((int) progress + " %");
+                    }
+                });
+    }
+
+
 
     private void getConversation() {
         conversationsLabel.setOnClickListener(new View.OnClickListener() {

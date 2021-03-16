@@ -3,13 +3,19 @@ package com.example.messanger.Chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -43,12 +49,12 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        profilePhoto = findViewById(R.id.ivProfilePhoto);
+        fullName = findViewById(R.id.tvFullName);
+
         messages = findViewById(R.id.lvMessages);
         sendMessage = findViewById(R.id.btnSendMessage);
         messageText = findViewById(R.id.etMessageToSend);
-
-
-        System.out.println(messages.getLayoutParams().height);
 
         configChatWindow();
         displayMessages();
@@ -56,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
+
 
     private void displayMessages() {
         Bundle bundle = getIntent().getExtras();
@@ -142,8 +149,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void configChatWindow() {
-        profilePhoto = findViewById(R.id.ivProfilePhoto);
-        fullName = findViewById(R.id.tvFullName);
 
         Bundle bundle = getIntent().getExtras();
         User userClicked = (User) bundle.get("userClicked");
