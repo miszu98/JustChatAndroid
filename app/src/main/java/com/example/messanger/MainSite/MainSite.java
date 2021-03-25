@@ -110,6 +110,7 @@ public class MainSite extends AppCompatActivity {
 
 
         profilePhoto = findViewById(R.id.ivProfilePhoto);
+
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +242,6 @@ public class MainSite extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        System.out.println("ładuje konwersacje");
                         Map<String, List<Message>> active = new HashMap<>();
                         for (DataSnapshot s : snapshot.getChildren()) {
                             if (s.getKey().split("-")[1].equals(userLoggedKey)) {
@@ -252,7 +252,6 @@ public class MainSite extends AppCompatActivity {
                                 active.put(s.getKey().split("-")[0], mess);
                             }
                         }
-
                         List<String> names = active.keySet().stream().map(i -> all.get(i).getName() + " " + all.get(i).getSurName()).collect(Collectors.toList());
                         String[] arrNames = Arrays.copyOf(names.toArray(), names.toArray().length, String[].class);
 
@@ -264,11 +263,9 @@ public class MainSite extends AppCompatActivity {
 
                         List<String> mails = active.keySet().stream().map(i -> all.get(i).getEmail()).collect(Collectors.toList());
 
-
                         ConversationAdapter conversationAdapter = new ConversationAdapter(MainSite.this, arrImages, arrNames, arrLastMessages);
                         listOfconversations.setAdapter(conversationAdapter);
 
-                        // todo on click row listener
                         listOfconversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -296,6 +293,10 @@ public class MainSite extends AppCompatActivity {
                             }
                         });
                     }
+
+
+
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
@@ -480,10 +481,6 @@ public class MainSite extends AppCompatActivity {
                                     animatorSet.start();
                                     break;
                             }
-
-
-
-
                             listView.setVisibility(View.VISIBLE);
                             conversationsLabel.setVisibility(View.GONE);
                             contactsLabel.setVisibility(View.GONE);

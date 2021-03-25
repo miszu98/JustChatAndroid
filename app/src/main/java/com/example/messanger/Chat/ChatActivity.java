@@ -3,7 +3,6 @@ package com.example.messanger.Chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,11 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -61,8 +61,47 @@ public class ChatActivity extends AppCompatActivity {
         createChatRoom();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+        messages.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                ViewGroup.LayoutParams params = messages.getLayoutParams();
+                params.height = 1084;
+                messages.setLayoutParams(params);
+                messages.requestLayout();
+                return false;
+            }
+        });
+
+        messageText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ViewGroup.LayoutParams params = messages.getLayoutParams();
+                System.out.println(params.height);
+                params.height = 600;
+                messages.setLayoutParams(params);
+                messages.requestLayout();
+                return false;
+            }
+        });
+
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        View v = this.getCurrentFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+        ViewGroup.LayoutParams params = messages.getLayoutParams();
+        params.height = 1084;
+        messages.setLayoutParams(params);
+        messages.requestLayout();
+        return super.onTouchEvent(event);
+    }
 
     private void displayMessages() {
         Bundle bundle = getIntent().getExtras();
@@ -85,7 +124,10 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 }
-                String[] arrMess = Arrays.copyOf(messList.stream().map(i -> i.getSender() + ": "  + i.getText()).toArray(), messList.stream().map(i -> i.getText()).toArray().length, String[].class);
+
+                String[] arrMess = Arrays.copyOf(messList.stream().map(i -> i.getSender() + ": "  + i.getText()).toArray(),
+                        messList.stream().map(i -> i.getText()).toArray().length, String[].class);
+
                 MessageAdapter messageAdapter = new MessageAdapter(ChatActivity.this, arrMess);
                 messages.post(new Runnable() {
                     @Override
@@ -101,6 +143,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private boolean createChatRoom() {
         Bundle bundle = getIntent().getExtras();
@@ -127,7 +171,6 @@ public class ChatActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
                 sendMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -137,14 +180,11 @@ public class ChatActivity extends AppCompatActivity {
                         messageText.setText("");
                     }
                 });
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
         return false;
     }
 
@@ -164,3 +204,5 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 }
+
+

@@ -116,6 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+
+
+
     /**
      * Get Email from user
      * Create new intent to switch site

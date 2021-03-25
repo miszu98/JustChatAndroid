@@ -108,7 +108,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        // Find user id actual logged
+
                         String idCurrentUserLogged = null;
                         for (DataSnapshot s : snapshot.getChildren()) {
                             if (s.getValue(User.class).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
@@ -116,7 +116,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                        // Find list of invites from user which was clicked
+
                         for (DataSnapshot s : snapshot.getChildren()) {
                             User user = s.getValue(User.class);
                             if (user.getEmail().equals(selectedUser.getEmail())) {
@@ -134,6 +134,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
             }
         });
+
 
 
     }
