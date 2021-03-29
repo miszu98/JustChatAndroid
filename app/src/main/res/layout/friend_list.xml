@@ -41,11 +41,11 @@
             android:text="TextView" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/deleteFriend"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        android:text="X"/>
+<!--    <Button-->
+<!--        android:id="@+id/deleteFriend"-->
+<!--        android:layout_width="43dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="X"/>-->
 <!--        android:focusableInTouchMode="true"-->
 
 

@@ -83,53 +83,53 @@ public class FriendAdapter extends ArrayAdapter<String> {
             }
         });
 
-        Button btnDelete = rowView.findViewById(R.id.deleteFriend);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataBase dataBase = new DataBase();
-                DatabaseReference databaseReference = dataBase.firebase.getReference().child("Users");
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String authenticator = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                        String key = null;
-                        User user = null;
-                        List<List<Serializable>> users = new ArrayList<>();
-                        for (DataSnapshot s : snapshot.getChildren()) {
-                            User u = s.getValue(User.class);
-                            if (u.getEmail().equals(authenticator)) {
-                                key = s.getKey();
-                                user = u;
-                            } else {
-                                users.add(Arrays.asList(s.getKey(), u));
-                            }
-                        }
-                        List<Integer> friends = user.getFriends().getListFriends();
-                        for (List<Serializable> x : users) {
-                            User userToAdd = (User) x.get(1);
-                            if (userToAdd.getEmail().equals(mails[position])) {
-                                friends.remove(Integer.parseInt(String.valueOf(x.get(0))));
-                                user.getFriends().setListFriends(friends);
-
-                                DatabaseReference reference = dataBase.firebase.getReference().child("Users");
-                                reference.child(key).setValue(user);
-
-                                List<Integer> friendsOtherUser = userToAdd.getFriends().getListFriends();
-                                friendsOtherUser.remove(Integer.parseInt(key));
-                                userToAdd.getFriends().setListFriends(friendsOtherUser);
-                                reference.child(String.valueOf(x.get(0))).setValue(userToAdd);
-                                break;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-            }
-        });
+//        Button btnDelete = rowView.findViewById(R.id.deleteFriend);
+//        btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DataBase dataBase = new DataBase();
+//                DatabaseReference databaseReference = dataBase.firebase.getReference().child("Users");
+//                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        String authenticator = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//                        String key = null;
+//                        User user = null;
+//                        List<List<Serializable>> users = new ArrayList<>();
+//                        for (DataSnapshot s : snapshot.getChildren()) {
+//                            User u = s.getValue(User.class);
+//                            if (u.getEmail().equals(authenticator)) {
+//                                key = s.getKey();
+//                                user = u;
+//                            } else {
+//                                users.add(Arrays.asList(s.getKey(), u));
+//                            }
+//                        }
+//                        List<Integer> friends = user.getFriends().getListFriends();
+//                        for (List<Serializable> x : users) {
+//                            User userToAdd = (User) x.get(1);
+//                            if (userToAdd.getEmail().equals(mails[position])) {
+//                                friends.remove(Integer.parseInt(String.valueOf(x.get(0))));
+//                                user.getFriends().setListFriends(friends);
+//
+//                                DatabaseReference reference = dataBase.firebase.getReference().child("Users");
+//                                reference.child(key).setValue(user);
+//
+//                                List<Integer> friendsOtherUser = userToAdd.getFriends().getListFriends();
+//                                friendsOtherUser.remove(Integer.parseInt(key));
+//                                userToAdd.getFriends().setListFriends(friendsOtherUser);
+//                                reference.child(String.valueOf(x.get(0))).setValue(userToAdd);
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                    }
+//                });
+//            }
+//        });
 
 
 
