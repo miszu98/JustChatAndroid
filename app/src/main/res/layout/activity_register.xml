@@ -148,15 +148,30 @@
         android:id="@+id/ivProfilePhoto"
         android:layout_width="159dp"
         android:layout_height="150dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/defaultuser"
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/etLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.509"
-        android:src="@drawable/defaultuser"
-        />
+        app:layout_constraintVertical_bias="0.166" />
+
+
+    <Spinner
+        android:id="@+id/countriesSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="105dp"
+        app:layout_constraintBottom_toTopOf="@+id/etLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivProfilePhoto" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

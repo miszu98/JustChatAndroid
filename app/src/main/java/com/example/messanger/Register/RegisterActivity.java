@@ -8,11 +8,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.messanger.MainActivity;
 import com.example.messanger.Models.User;
@@ -42,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     // Controlls
     private EditText loginInput, passwordInput, emailInput, nameInput, surnameInput, ageInput, phoneNumberInput;
     private Button registerBtn;
+    private Spinner spinner;
 
     private DataBase dataBase;
     private FirebaseAuth firebaseAuth;
@@ -64,6 +68,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        spinner = (Spinner) findViewById(R.id.countriesSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.countries, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -145,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                dataBase.save(new User(login, password, email, name, surname, Integer.parseInt(age), Integer.parseInt(phoneNumber), photoID));
+                                dataBase.save(new User(spinner.getSelectedItem().toString(), login, password, email, name, surname, Integer.parseInt(age), Integer.parseInt(phoneNumber), photoID));
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 Toast toast = Toast.makeText(getApplicationContext(), "Register Succesful", Toast.LENGTH_SHORT);
                                 toast.show();

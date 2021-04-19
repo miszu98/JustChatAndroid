@@ -53,15 +53,12 @@ import java.util.stream.Collectors;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Michal Malek
  * Class for Display friends, invites, conversations, search list and configure all functionality
  * - accept/decline invite from user
  * - add user after accept
  * - get photo profile logged user from FirebaseStorage
  * - live searching database and display results
  */
-
-
 public class MainSite extends AppCompatActivity {
 
     private ListView listView, listOfconversations, listOfInvites, listOfFriends;
@@ -222,18 +219,17 @@ public class MainSite extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Get all conversations marked as logged user id
+     */
     private void getConversation() {
         conversationsLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 lastSite = "conversations";
-
                 conversationsLabel.setTextColor(Color.rgb(200, 48, 48));
                 contactsLabel.setTextColor(Color.rgb(128,128,128));
                 invitesLabel.setTextColor(Color.rgb(128,128,128));
-
                 listOfconversations.setVisibility(View.VISIBLE);
                 listOfInvites.setVisibility(View.GONE);
                 listOfFriends.setVisibility(View.GONE);
@@ -244,37 +240,30 @@ public class MainSite extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Map<String, List<Message>> active = new HashMap<>();
                         for (DataSnapshot s : snapshot.getChildren()) {
-                            if (s.getKey().split("-")[1].equals(userLoggedKey)) {
+                            if (s.getKey().split("-")[0].equals(userLoggedKey)) {
                                 List<Message> mess = new ArrayList<>();
                                 for (DataSnapshot x : s.getChildren()) {
                                     mess.add(x.getValue(Message.class));
                                 }
-                                active.put(s.getKey().split("-")[0], mess);
+                                active.put(s.getKey().split("-")[1], mess);
                             }
                         }
                         List<String> names = active.keySet().stream().map(i -> all.get(i).getName() + " " + all.get(i).getSurName()).collect(Collectors.toList());
                         String[] arrNames = Arrays.copyOf(names.toArray(), names.toArray().length, String[].class);
-
                         List<String> images = active.keySet().stream().map(i -> all.get(i).getProfilePhotoID()).collect(Collectors.toList());
                         String[] arrImages = Arrays.copyOf(images.toArray(), images.toArray().length, String[].class);
-
                         List<String> lastMessages = active.keySet().stream().map(i -> active.get(i).get(active.get(i).size()-1).getText()).collect(Collectors.toList());
                         String[] arrLastMessages = Arrays.copyOf(lastMessages.toArray(), lastMessages.toArray().length, String[].class);
-
                         List<String> mails = active.keySet().stream().map(i -> all.get(i).getEmail()).collect(Collectors.toList());
-
                         ConversationAdapter conversationAdapter = new ConversationAdapter(MainSite.this, arrImages, arrNames, arrLastMessages);
                         listOfconversations.setAdapter(conversationAdapter);
-
                         listOfconversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 User userLogged = null;
                                 String keyUserLogged = null;
-
                                 User userClicked = null;
                                 String keyUserClicked = null;
-
                                 for (String key : all.keySet()) {
                                     if (all.get(key).getEmail().equals(getEmailActualLoggedUser())) {
                                         userLogged = all.get(key);
@@ -293,10 +282,6 @@ public class MainSite extends AppCompatActivity {
                             }
                         });
                     }
-
-
-
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
@@ -304,12 +289,13 @@ public class MainSite extends AppCompatActivity {
             }
         });
         conversationsLabel.performClick();
-
     }
 
+
+    
+
     /**
-     * Method using before created FriendAdapter class
-     * Get data from database and put in FriendAdapter
+     * Search in database friends from user which logged
      */
     private void getFriendList() {
         contactsLabel.setOnClickListener(new View.OnClickListener() {
@@ -532,8 +518,7 @@ public class MainSite extends AppCompatActivity {
 
 
     /**
-     * Method using InviteAdapter
-     * Connect to database and get data from logged user about invites
+     * Search invites in database from user which logged
      */
     private void getListOfInvites() {
         invitesLabel.setOnClickListener(new View.OnClickListener() {

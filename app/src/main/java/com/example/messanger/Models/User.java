@@ -15,11 +15,12 @@ public class User implements Serializable {
     private String profilePhotoID;
     private Friends friends;
     private Invites invites;
+    private String country;
 
     public User() {
     }
 
-    public User(String login, String password, String email, String name, String surName, int age, int phoneNumber, String profilePhotoID) {
+    public User(String country, String login, String password, String email, String name, String surName, int age, int phoneNumber, String profilePhotoID) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -30,6 +31,7 @@ public class User implements Serializable {
         this.profilePhotoID = profilePhotoID;
         this.friends = new Friends();
         this.invites = new Invites();
+        this.country = country;
     }
 
     public Friends getFriends() {
@@ -48,7 +50,13 @@ public class User implements Serializable {
         this.invites = invites;
     }
 
+    public String getCountry() {
+        return country;
+    }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getProfilePhotoID() {
         return profilePhotoID;

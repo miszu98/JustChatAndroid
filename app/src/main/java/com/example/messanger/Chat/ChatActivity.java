@@ -3,12 +3,6 @@ package com.example.messanger.Chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
@@ -35,11 +29,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class ChatActivity is an object that gives us all the functionalities related to chat
+ */
 public class ChatActivity extends AppCompatActivity {
 
     private CircleImageView profilePhoto;
@@ -108,6 +115,9 @@ public class ChatActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    /**
+     * Get all messages beetwen users, search key in database if key is correct read all values from this key and display on screen
+     */
     private void displayMessages() {
         Bundle bundle = getIntent().getExtras();
 
@@ -150,7 +160,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Create chat room in database. If chat room exist add message (value) to key
+     * Chat room have key which consists of id of user logged and id of user clicked (user which we want messaging)
+     * pattern: id_user_logged-id_user_clicked f.e 1-2 this is a chat room of users with id 1 and 2
+     * @return boolean
+     */
     private boolean createChatRoom() {
         Bundle bundle = getIntent().getExtras();
 
@@ -180,9 +195,45 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         DatabaseReference messRef = dataBase.firebase.getReference().child("Conversations");
-                        messRef.child(existingConversation).push().setValue(new Message(userLogged.getName() + " " + userLogged.getSurName(), userClicked.getName() + " " + userClicked.getSurName(), messageText.getText().toString()));
-                        messRef.child(reverseConversation).push().setValue(new Message(userLogged.getName() + " " + userLogged.getSurName(), userClicked.getName() + " " + userClicked.getSurName(), messageText.getText().toString()));
-                        messageText.setText("");
+
+                        String from = userLogged.getCountry();
+                        String to = userClicked.getCountry();
+                        String mess = messageText.getText().toString().replaceAll(" ", "%20");
+
+                        Thread thread = new Thread(new Runnable() {
+                            String translatedMess;
+                            @Override
+                            public void run() {
+                                try {
+                                    String link = "https://api.mymemory.translated.net/get?q=" + mess + "&langpair=" + from + "|" + to;
+                                    URL url = new URL(link);
+                                    URLConnection request = url.openConnection();
+                                    request.connect();
+                                    JsonParser jsonParser = new JsonParser();
+                                    JsonElement jsonElement = jsonParser.parse(new InputStreamReader((InputStream) request.getContent()));
+                                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                    translatedMess = jsonObject.get("responseData").getAsJsonObject().get("translatedText").getAsString();
+                                    System.out.println("PRZETLUMACZONE: " + translatedMess);
+
+
+                                    messRef.child(existingConversation).push().setValue(
+                                            new Message(userLogged.getName() + " " + userLogged.getSurName(),
+                                                    userClicked.getName() + " " + userClicked.getSurName(),
+                                                    messageText.getText().toString()));
+
+                                    messRef.child(reverseConversation).push().setValue(
+                                            new Message(userLogged.getName() + " " + userLogged.getSurName(),
+                                                    userClicked.getName() + " " + userClicked.getSurName(),
+                                                    translatedMess));
+
+                                    messageText.setText("");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        thread.start();
+
                     }
                 });
             }

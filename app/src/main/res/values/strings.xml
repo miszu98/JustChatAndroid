@@ -11,4 +11,11 @@
     <string name="hint_phonenumber">Phone number</string>
     <string name="password_rules">Upper and Lower letters 8-12, numbers 1-4, and one special char .,!@#$&amp;*</string>
 
+
+    <string-array name="countries">
+        <item>pl</item>
+        <item>en</item>
+        <item>de</item>
+    </string-array>
+
 </resources>
