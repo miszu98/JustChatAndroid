@@ -71,5 +71,5 @@ Mobile app to chat with friends
 
 ## Status of project: 
 ```diff 
-- Process
++ Complete
 ```
